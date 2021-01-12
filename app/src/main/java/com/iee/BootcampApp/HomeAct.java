@@ -3,10 +3,12 @@ package com.iee.BootcampApp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,13 +19,14 @@ public class HomeAct extends AppCompatActivity {
     private ProgressBar myProgress;
     private Question [] questionsList ;
     private int score = 0;
-    private int qstNb = 0;
+    private int qstNb = 0, progress = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        inisailizeItems();
+        initializeItems();
+
 
         questionsList = new Question[]
                 {new Question("If we add three to five we'll get nine","False"),
@@ -57,24 +60,61 @@ public class HomeAct extends AppCompatActivity {
 
 
     }
+    private void updateProgress() {
+        progress = (int) ( ((double) (qstNb+1) / (double) questionsList.length)*100);
+        Toast.makeText(this, String.valueOf(progress), Toast.LENGTH_SHORT).show();
+        myProgress.setProgress(progress);
+    }
     private void checkAnswer(Button button){
         if (questionsList[qstNb].getAnswer().equals(button.getText().toString())){ // The user is right
-            Toast.makeText(this, "You are right !", Toast.LENGTH_SHORT).show();
+
             updateScore();
         }else {
-            Toast.makeText(this, "You are wrong !", Toast.LENGTH_SHORT).show(); // The user is wrong
+
         }
 
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     private  void toTheNextQuestion(){
 
         if (qstNb<questionsList.length-1){
             qstNb++;
-
+            questionDisplay.setText(questionsList[qstNb].getQuestion());
+            updateProgress();
         }else {
-            qstNb =0;
+
+            AlertDialog.Builder mbuilder = new AlertDialog.Builder(HomeAct.this);
+            mbuilder.setTitle("Game over");
+            ImageView imgView = new ImageView(HomeAct.this);
+            imgView.setMaxWidth(300);
+            imgView.setMaxHeight(300);
+            if (score >= questionsList.length/2){
+                imgView.setImageDrawable(getResources().getDrawable(R.drawable.youwin));
+            }else {
+                imgView.setImageDrawable(getResources().getDrawable(R.drawable.youlose));
+            }
+            mbuilder.setView(imgView);
+            mbuilder.setPositiveButton("Play again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    qstNb =0;
+                    progress = 0;
+                    score = 0;
+                    questionDisplay.setText(questionsList[qstNb].getQuestion());
+                    updateProgress();
+                    scoreDisplay.setText("Your score is : "+String.valueOf(score));
+
+                }
+            });
+            mbuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            mbuilder.show();
         }
-        questionDisplay.setText(questionsList[qstNb].getQuestion());
+
 
     }
 
@@ -84,7 +124,7 @@ public class HomeAct extends AppCompatActivity {
             score++;
 
         }else {
-            score= 0;
+            //score= 0;
         }
         scoreDisplay.setText("Your score is : "+String.valueOf(score));
     }
@@ -112,7 +152,7 @@ public class HomeAct extends AppCompatActivity {
     }
 
 
-    private void inisailizeItems(){
+    private void initializeItems(){
         questionDisplay=findViewById(R.id.question);
         scoreDisplay=findViewById(R.id.score);
         trueBtn=findViewById(R.id.trueBtn);
