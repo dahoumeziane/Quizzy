@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mainback"
+
+    tools:context=".HomeAct">
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Your score is :"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/score"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Here we will display the question"
+        android:textColor="@color/white"
+        android:textSize="35sp"
+        android:textStyle="bold">
+
+    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/trueBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/truebtnback"
+                android:text="True"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="#fff"
+                android:layout_weight="1">
+
+            </androidx.appcompat.widget.AppCompatButton>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/falseBtn"
+                android:text="False"
+                android:textSize="18sp"
+                android:textColor="#fff"
+                android:textAllCaps="false"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/falsebtnback"
+                android:layout_weight="1">
+
+            </androidx.appcompat.widget.AppCompatButton>
+        </LinearLayout>
+        <ProgressBar
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:progress="50"
+            android:progressTint="@color/white"
+            android:id="@+id/myProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_height="wrap_content">
+
+        </ProgressBar>
+    </LinearLayout>
+
+</RelativeLayout>

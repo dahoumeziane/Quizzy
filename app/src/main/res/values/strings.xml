@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Iee bootcamp App</string>
+    <string name="email_adr">Write your email addresse please</string>
+    <string name="exit_msg">Do you really want to exit the application ?</string>
+</resources>
