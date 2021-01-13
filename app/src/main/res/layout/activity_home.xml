@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Your score is :"
+        android:text="Your score is : 0"
         android:fontFamily="@font/roboto_bold"
         android:textColor="@color/white"
         android:textSize="22sp"
@@ -25,13 +25,28 @@
         android:id="@+id/question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/score"
+        android:layout_below="@id/counter"
         android:layout_margin="10dp"
         android:gravity="center"
         android:fontFamily="@font/roboto_regular"
         android:text="Here we will display the question"
         android:textColor="@color/white"
         android:textSize="35sp"
+        android:textStyle="bold">
+
+    </TextView>
+    <TextView
+        android:id="@+id/counter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/score"
+        android:layout_margin="10dp"
+
+        android:gravity="center"
+        android:fontFamily="@font/roboto_regular"
+        android:text="You need to answer before : 00:30"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         android:textStyle="bold">
 
     </TextView>

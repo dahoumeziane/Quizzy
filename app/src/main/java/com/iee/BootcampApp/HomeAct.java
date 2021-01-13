@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,9 @@ public class HomeAct extends AppCompatActivity {
     private Question [] questionsList ;
     private int score = 0;
     private int qstNb = 0, progress = 1;
+    private TextView counter ;
+    private long totalTime = 30000;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +59,18 @@ public class HomeAct extends AppCompatActivity {
                 toTheNextQuestion();
             }
         });
+        setQstCounter();
+
 
 
 
 
     }
+    private void setQstCounter(){
+       countDownTimer.start();
+    }
     private void updateProgress() {
         progress = (int) ( ((double) (qstNb+1) / (double) questionsList.length)*100);
-        Toast.makeText(this, String.valueOf(progress), Toast.LENGTH_SHORT).show();
         myProgress.setProgress(progress);
     }
     private void checkAnswer(Button button){
@@ -78,9 +86,13 @@ public class HomeAct extends AppCompatActivity {
     private  void toTheNextQuestion(){
 
         if (qstNb<questionsList.length-1){
+            totalTime=30000;
             qstNb++;
             questionDisplay.setText(questionsList[qstNb].getQuestion());
             updateProgress();
+            countDownTimer.cancel();
+            countDownTimer.start();
+
         }else {
 
             AlertDialog.Builder mbuilder = new AlertDialog.Builder(HomeAct.this);
@@ -113,6 +125,7 @@ public class HomeAct extends AppCompatActivity {
                 }
             });
             mbuilder.show();
+            countDownTimer.cancel();
         }
 
 
@@ -158,7 +171,20 @@ public class HomeAct extends AppCompatActivity {
         trueBtn=findViewById(R.id.trueBtn);
         falseBtn=findViewById(R.id.falseBtn);
         myProgress=findViewById(R.id.myProgressBar);
+        counter = findViewById(R.id.counter);
+        countDownTimer =new CountDownTimer(totalTime,1000){
+            @Override
+            public void onTick(long l) {
+                // update for our text counter display
+                counter.setText("You need to answer before : 00:"+l/1000);
+            }
 
+            @Override
+            public void onFinish() {
+                toTheNextQuestion();
+                Toast.makeText(HomeAct.this, "You passed the timeout !", Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
 }

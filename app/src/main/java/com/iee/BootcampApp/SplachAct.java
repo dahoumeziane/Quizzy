@@ -28,6 +28,7 @@ public class SplachAct extends AppCompatActivity {
             }
         };
         thread.start();
+
     }
 
 
