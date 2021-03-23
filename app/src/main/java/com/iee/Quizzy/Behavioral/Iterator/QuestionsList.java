@@ -1,6 +1,6 @@
-package com.iee.BootcampApp.Behavioral.Iterator;
+package com.iee.Quizzy.Behavioral.Iterator;
 
-import com.iee.BootcampApp.Creator.factoryMethod.product.Question;
+import com.iee.Quizzy.Creator.factoryMethod.product.Question;
 
 import java.util.ArrayList;
 
@@ -29,6 +29,7 @@ public class QuestionsList implements Container {
     public Question get(int index) {
         return questions.get(index);
     }
+
     public class QuestionIterator  implements Iterator{
         private int index;
 
@@ -45,7 +46,7 @@ public class QuestionsList implements Container {
         }
 
         @Override
-        public Object next() {
+        public Question next() {
             // TODO Auto-generated method stub
             return questions.get(index++);
         }

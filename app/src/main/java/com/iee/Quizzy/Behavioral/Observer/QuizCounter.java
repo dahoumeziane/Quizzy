@@ -1,12 +1,13 @@
-package com.iee.BootcampApp.Behavioral.Observer;
+package com.iee.Quizzy.Behavioral.Observer;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.iee.BootcampApp.QuizActivity.observable;
+import static com.iee.Quizzy.controller.QuizActivity.observable;
 
 public  class QuizCounter implements Observable {
     private List<Observer> observers;
@@ -27,6 +28,7 @@ public  class QuizCounter implements Observable {
             @Override
             public void onTick(long l) {
                 observable.notify(l);
+                Log.d("tick", "onTick: "+String.valueOf(l));
 
             }
 

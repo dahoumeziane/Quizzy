@@ -1,4 +1,4 @@
-package com.iee.BootcampApp.Behavioral.Iterator;
+package com.iee.Quizzy.Behavioral.Iterator;
 
 public interface Container {
     public Iterator createIterator();

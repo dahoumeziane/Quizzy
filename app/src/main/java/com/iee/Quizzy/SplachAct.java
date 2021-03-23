@@ -1,9 +1,11 @@
-package com.iee.BootcampApp;
+package com.iee.Quizzy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.iee.Quizzy.controller.QuizActivity;
 
 public class SplachAct extends AppCompatActivity {
 
@@ -20,7 +22,7 @@ public class SplachAct extends AppCompatActivity {
                     e.printStackTrace();
                 }finally {
                     // Send to another activity
-                    Intent intent = new Intent(SplachAct.this,QuizActivity.class);
+                    Intent intent = new Intent(SplachAct.this, QuizActivity.class);
                     startActivity(intent);
                     finish();
 

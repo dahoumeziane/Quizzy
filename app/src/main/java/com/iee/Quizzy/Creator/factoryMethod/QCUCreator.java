@@ -1,7 +1,7 @@
-package com.iee.BootcampApp.Creator.factoryMethod;
+package com.iee.Quizzy.Creator.factoryMethod;
 
-import com.iee.BootcampApp.Creator.factoryMethod.product.QCU;
-import com.iee.BootcampApp.Creator.factoryMethod.product.Question;
+import com.iee.Quizzy.Creator.factoryMethod.product.QCU;
+import com.iee.Quizzy.Creator.factoryMethod.product.Question;
 
 import java.util.ArrayList;
 

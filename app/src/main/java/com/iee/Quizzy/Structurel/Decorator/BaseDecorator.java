@@ -1,7 +1,7 @@
-package com.iee.BootcampApp.Structurel.Decorator;
+package com.iee.Quizzy.Structurel.Decorator;
 
-import com.iee.BootcampApp.Creator.factoryMethod.product.QCM;
-import com.iee.BootcampApp.Creator.factoryMethod.product.Question;
+import com.iee.Quizzy.Creator.factoryMethod.product.QCM;
+import com.iee.Quizzy.Creator.factoryMethod.product.Question;
 
 import java.util.ArrayList;
 

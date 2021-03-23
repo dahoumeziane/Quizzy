@@ -1,4 +1,4 @@
-package com.iee.BootcampApp.Creator.factoryMethod.product;
+package com.iee.Quizzy.Creator.factoryMethod.product;
 
 import java.util.ArrayList;
 

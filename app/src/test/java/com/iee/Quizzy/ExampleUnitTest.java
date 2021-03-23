@@ -1,4 +1,4 @@
-package com.iee.BootcampApp;
+package com.iee.Quizzy;
 
 import org.junit.Test;
 

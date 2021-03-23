@@ -1,7 +1,9 @@
-package com.iee.BootcampApp;
+package com.iee.Quizzy.controller;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,85 +12,70 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.iee.BootcampApp.Behavioral.Iterator.QuestionsList;
-import com.iee.BootcampApp.Behavioral.Observer.Observable;
-import com.iee.BootcampApp.Behavioral.Observer.Observer;
-import com.iee.BootcampApp.Behavioral.Observer.QuizCounter;
-import com.iee.BootcampApp.Creator.factoryMethod.QCMCreator;
-import com.iee.BootcampApp.Creator.factoryMethod.QCUCreator;
-import com.iee.BootcampApp.Structurel.Decorator.Bonus;
+import com.iee.Quizzy.Behavioral.Observer.Observable;
+import com.iee.Quizzy.Behavioral.Observer.Observer;
+import com.iee.Quizzy.Behavioral.Observer.QuizCounter;
+import com.iee.Quizzy.Creator.factoryMethod.product.Question;
+import com.iee.Quizzy.R;
+import com.iee.Quizzy.model.QuizBrain;
 
 import java.util.ArrayList;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener, Observer {
     private TextView questionDisplay, scoreDisplay;
     private ProgressBar myProgress, timerProgress;
-    private double score = 0;
-    private int qstNb = 0, progress = 1;
+    private int  progress = 1;
     private TextView counter;
     private TextView nbQuestion;
     private long totalTime = 30000;
     private TextView[] choices;
     private ArrayList<String> selectedAnswers;
     private Button submit;
-    private QuestionsList questionsList;
-    private QCMCreator qcmCreator ;
-    private QCUCreator qcuCreator;
+
     private QuizCounter quizCounter;
     public static Observable observable;
+
+    private QuizBrain quizBrain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         initializeItems();
-
-
-        initIterator();
-        initCreator();
-
+        quizBrain= new QuizBrain();
+        quizBrain.initIterator();
+        initFirstQuestion();
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EvaluateAnswers();
+                UpdateScore();
             }
         });
 
 
+
+
     }
 
-    private void EvaluateAnswers() {
-        score=score+questionsList.get(qstNb).evaluate(selectedAnswers);
-        Log.d("Score", String.valueOf(score));
-        scoreDisplay.setText(String.valueOf(score));
+    private void UpdateScore() {
+        quizBrain.UpdateScore(selectedAnswers);
+        scoreDisplay.setText(String.valueOf(quizBrain.getScore()));
         toTheNextQuestion();
     }
 
-    private void initCreator() {
+    private void initFirstQuestion() {
 
-        questionDisplay.setText(questionsList.get(0).getQuestion());
-        for (int i = 0; i < questionsList.get(0).getChoices().length; i++) {
+        questionDisplay.setText(quizBrain.getQuestionsList().get(0).getQuestion());
+        for (int i = 0; i < quizBrain.getQuestionsList().get(0).getChoices().length; i++) {
 
-            choices[i].setText(questionsList.get(qstNb).getChoices()[i]);
+            choices[i].setText(quizBrain.getQuestionsList().get(quizBrain.getQstNb()).getChoices()[i]);
         }
-        nbQuestion.setText("Question: " + String.valueOf(qstNb));
+        nbQuestion.setText("Question: " + String.valueOf(quizBrain.getQstNb()));
         quizCounter.startTimer();
     }
 
-    private void initIterator(){
-        questionsList = new QuestionsList();
-        ArrayList<String> answers = new ArrayList<>(1);
-        answers.add("1999");
-        questionsList.append(new Bonus((qcmCreator.createQuestion("When is my raouf birthday ?", answers, new String[]{"1999", "2000", "1998", "1997"}
-                , 10))));
-        questionsList.append(qcmCreator.createQuestion("When is my birthday ?", answers, new String[]{"1999", "2000", "1998", "1997"}
-                , 10));
-        questionsList.append(qcuCreator.createQuestion("Qcu question", answers, new String[]{"option 1", "option 2", "option 3", "option 4"}
-                , 10));
-    }
+
 
     private void initializeItems() {
-        qcmCreator = new QCMCreator();
-        qcuCreator = new QCUCreator();
         quizCounter= new QuizCounter();
         observable = new QuizCounter();
         observable.subscribe(this);
@@ -113,30 +100,47 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void toTheNextQuestion() {
-        if (qstNb < questionsList.getSize() - 1) {
+        if (quizBrain.getQstNb() < quizBrain.getQuestionsList().size-1){
+            Question nextQuestion = quizBrain.getNextQuestion();
             totalTime = 30000;
-            qstNb++;
-            nbQuestion.setText("Question: " + String.valueOf(qstNb));
-            questionDisplay.setText(questionsList.get(qstNb).getQuestion());
-            for (int i = 0; i < questionsList.get(qstNb).getChoices().length; i++) {
+            nbQuestion.setText("Question: " + String.valueOf(quizBrain.getQstNb()));
+            questionDisplay.setText(nextQuestion.getQuestion());
+            for (int i = 0; i < nextQuestion.getChoices().length; i++) {
 
-                choices[i].setText(questionsList.get(qstNb).getChoices()[i]);
+                choices[i].setText(nextQuestion.getChoices()[i]);
             }
-            updateProgress();
+            quizBrain.UpdateProgress();
+            updateProgressUI();
+            // Reset the answers List
+            ClearPreviousAnswers();
             quizCounter.cancelTimer();
             quizCounter.startTimer();
-            // Reset the answers List
-
-            ClearPreviousAnswers();
-
-        } else {
-
-            qstNb = 0;
-            progress = 0;
-            score = 0;
+        }else {
             quizCounter.cancelTimer();
-            initCreator();
+            AlertDialog.Builder mbuilder = new AlertDialog.Builder(QuizActivity.this);
+            mbuilder.setTitle("Game over");
+            mbuilder.setMessage("The game ended and your score is : "+quizBrain.getScore());
+            mbuilder.setPositiveButton("Replay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    quizBrain.ResetGame();
+                    ClearPreviousAnswers();
+                    initFirstQuestion();
+                    quizCounter.setCounter();
+                    scoreDisplay.setText("0");
+                }
+            });
+            mbuilder.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            mbuilder.show();
+
+
         }
+
     }
 
     private void ClearPreviousAnswers() {
@@ -146,32 +150,30 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void updateProgress() {
-        progress = (int) (((double) (qstNb + 1) / (double) questionsList.getSize()) * 100);
+    private void updateProgressUI() {
+        progress = quizBrain.getProgress();
         myProgress.setProgress(progress);
     }
 
     @Override
     public void onClick(View view) {
 
-        checkAnswer(view);
+        checkOption(view);
 
     }
 
-    private void checkAnswer(View view) {
+    private void checkOption(View view) {
         TextView textView = findViewById(view.getId());
 
 
         if (!selectedAnswers.contains(textView.getText().toString())) {
             selectedAnswers.add(textView.getText().toString());
             textView.setBackgroundResource(R.color.grey);
-            Log.d("selected", "selected");
 
         } else {
+            //Uncheck option
             selectedAnswers.remove(textView.getText().toString());
             textView.setBackgroundResource(R.color.white);
-            Log.d("unselected", "unselected item");
-
 
         }
         Log.d("array", selectedAnswers.toString());
