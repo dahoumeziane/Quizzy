@@ -34,14 +34,25 @@ public class QuizBrain {
     }
     public void initIterator(){
         questionsList = new QuestionsList();
-        ArrayList<String> answers = new ArrayList<>(1);
-        answers.add("1999");
-        questionsList.append(new Bonus((qcmCreator.createQuestion("When is my raouf birthday ?", answers, new String[]{"1999", "2000", "1998", "1997"}
-                , 10))));
-        questionsList.append(qcmCreator.createQuestion("When is my birthday ?", answers, new String[]{"1999", "2000", "1998", "1997"}
-                , 10));
-        questionsList.append(qcuCreator.createQuestion("Qcu question", answers, new String[]{"option 1", "option 2", "option 3", "option 4"}
-                , 10));
+        ArrayList<String> answers = new ArrayList<>();
+        answers.add("2");
+        answers.add("-2");
+        questionsList.append(qcmCreator.createQuestion("What is the solution of x^2=4", answers, new String[]{"2", "99", "-2", "1,5"}
+                , 5));
+        answers = new ArrayList<>();
+        answers.add("Italy");
+
+        questionsList.append(qcuCreator.createQuestion("Rom is Capital of...", answers, new String[]{"Algeria", "Italy", "France", "Egypt"}
+                , 12));
+        answers = new ArrayList<>();
+        answers.add("100 degrees");
+        answers.add("212 fahrenheit");
+        questionsList.append(new Bonus(qcmCreator.createQuestion("The water evaporate in...", answers, new String[]{"212 fahrenheit", "60 degrees", "100 degrees", "170 degrees"}
+                , 20)));
+        answers = new ArrayList<>();
+        answers.add("No answer");
+        questionsList.append(new Bonus((qcmCreator.createQuestion("RAM stands for...", answers, new String[]{"Read only memory", "Read access memory", "All answers", "No answer"}
+                , 60))));
     }
     public Question getNextQuestion() {
         qstNb++;
