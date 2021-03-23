@@ -20,7 +20,7 @@ public class SplachAct extends AppCompatActivity {
                     e.printStackTrace();
                 }finally {
                     // Send to another activity
-                    Intent intent = new Intent(SplachAct.this,HomeAct.class);
+                    Intent intent = new Intent(SplachAct.this,QuizActivity.class);
                     startActivity(intent);
                     finish();
 
